@@ -24,10 +24,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 !.env.example
 !.env.ci
 
-# Generated Prisma Client (auto-generated, do NOT push)
-prisma/generated/
-src/infrastructure/database/generated/
-
 # System files
 .DS_Store
 
