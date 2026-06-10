@@ -1,0 +1,25 @@
+{
+  "name": "cric-buzz-app",
+  "version": "1.0.0",
+  "description": "A cricket score application built with Node.js and Express.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "biome": "bun biome:clean && bun biome:format && bun biome:check && bun biome:lint",
+    "biome:format": "bunx biome format --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
+    "biome:lint": "bunx biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
+    "biome:check": "bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
+    "biome:clean": "bunx biome clean"
+  },
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "@biomejs/biome": "^2.4.16"
+  }
+}
