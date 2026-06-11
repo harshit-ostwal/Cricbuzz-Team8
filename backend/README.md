@@ -4,12 +4,14 @@ Cricbuzz Cricket Statistics Backend API built with Node.js and Express.
 
 ## Getting Started
 
-### 1. Create a new project
+### 1. Clone project
+
 ```sh
-bunx backend-starter <your-project-name>
+git clone https://github.com/harshit-ostwal/Cricbuzz-Team8.git
 ```
 
 ### 2. Install dependencies
+
 ```sh
 cd <your-project-name>
 # Use your chosen package manager (Bun, Pnpm, or Npm)
@@ -21,7 +23,9 @@ npm install
 ```
 
 ### 3. Configure environment variables
+
 Copy the environment sample file and configure it with your settings:
+
 ```sh
 cp .env.sample .env
 # or for development
@@ -33,16 +37,19 @@ cp .env.sample .env.production
 Edit the `.env` files with your database credentials and other settings.
 
 ### 4. Run the development server
+
 ```sh
 bun run dev
 ```
 
 For development with nodemon auto-reload:
+
 ```sh
 bun run dev:nodemon
 ```
 
 ### 5. Access API documentation
+
 Visit `http://localhost:8080/api/v1/docs` for Swagger UI.
 
 ---
@@ -52,10 +59,13 @@ Visit `http://localhost:8080/api/v1/docs` for Swagger UI.
 The project follows a modular architecture with clear separation of concerns. Here's the complete folder structure:
 
 ### `src/`
+
 Main source code directory containing all application logic.
 
 #### `config/`
+
 Contains all configuration setup files for packages and features:
+
 - **`env.config.js`** - Environment variables configuration
 - **`swagger.config.js`** - Swagger/OpenAPI documentation setup
 - **`security/`** - Security-related configurations
@@ -66,6 +76,7 @@ Contains all configuration setup files for packages and features:
   - `hpp.config.js` - HTTP Parameter Pollution protection
 
 #### `core/`
+
 Core application logic and utilities:
 
 - **`factories/`** - Factory pattern implementations for singleton creation
@@ -89,6 +100,7 @@ Core application logic and utilities:
   - `jwt.security.js` - JWT token generation and verification
 
 #### `infrastructure/`
+
 Infrastructure and external service integrations:
 
 - **`database/`** - Database service and connections
@@ -104,14 +116,18 @@ Infrastructure and external service integrations:
   - `logger.transports.js` - Transport configurations (file, console, etc.)
 
 #### `modules/`
+
 Feature modules containing domain-specific logic (to be expanded as features grow).
 
 #### `routes/`
+
 Route definitions and handlers:
+
 - **`health.route.js`** - Health check endpoint
 - **`index.js`** - Main routes entry point
 
 #### `shared/`
+
 Shared utilities and constants used across the application:
 
 - **`constants/`** - Application-wide constants
@@ -132,6 +148,7 @@ Shared utilities and constants used across the application:
   - `zod.utils.js` - Zod validation helpers and custom validators
 
 #### Root Files
+
 - **`app.js`** - Express app initialization and middleware setup
 - **`index.js`** - Application entry point
 
@@ -158,6 +175,7 @@ bun run format          # Format code with Biome
 ## Environment Variables
 
 Required environment variables (see `.env.sample` for all options):
+
 - `NODE_ENV` - Environment mode (development, production)
 - `PORT` - Server port (default: 8080)
 - `DATABASE_URL` - Database connection string
@@ -186,4 +204,3 @@ Please ensure code follows the project structure and conventions outlined above 
 ## License
 
 MIT
-
