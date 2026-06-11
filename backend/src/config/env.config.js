@@ -13,13 +13,13 @@ if (fs.existsSync(envFile)) {
   console.info(`\n 🌱 Loaded environment variables from: ${envFile} \n`);
 } else if (fs.existsSync(defaultEnvFile)) {
   console.warn(
-    `\n ⚠️ ${envFile} not found. Falling back to ${defaultEnvFile}. \n`
+    `\n ⚠️ ${envFile} not found. Falling back to ${defaultEnvFile}. \n`,
   );
   path = defaultEnvFile;
   console.info(`\n 🌱 Loaded environment variables from: ${defaultEnvFile} \n`);
 } else {
   console.error(
-    `\n ❌ No environment file found. Please create either ${envFile} or ${defaultEnvFile}. \n`
+    `\n ❌ No environment file found. Please create either ${envFile} or ${defaultEnvFile}. \n`,
   );
 }
 
@@ -40,7 +40,7 @@ const env = parsedEnv.success ? parsedEnv.data : {};
 if (!parsedEnv.success) {
   console.error(
     "❌ Invalid environment variables:",
-    parsedEnv.error.flatten().fieldErrors
+    parsedEnv.error.flatten().fieldErrors,
   );
 }
 
@@ -67,4 +67,20 @@ export const {
 
   // Cookies
   COOKIE_SECRET_KEY,
+
+  // jWT Secret
+  JWT_ACCESS_SECRE,
+  JWT_REFRESH_SECRET,
+
+  //Tokens
+  ACCESS_TOKEN_EXPIRY,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_EXPIRY_MS,
+  REFRESH_TOKEN_SECRET,
+
+  // Google
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
 } = env;

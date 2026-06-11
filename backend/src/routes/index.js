@@ -3,7 +3,7 @@ import createRouter from "../core/factories/router.factory.js";
 import ApiResponse from "../core/http/api.response.js";
 import { APP_NAME } from "../shared/constants/app.constants.js";
 import healthRoute from "./health.route.js";
-
+import authRoute from "../modules/auth/auth.route.js";
 const router = createRouter();
 
 // Swagger UI for API documentation
@@ -26,5 +26,7 @@ router.get("/", (_, res) => {
  * @access Public
  */
 router.use("/health", healthRoute);
+
+router.use('/auth', authRoute)
 
 export default router;

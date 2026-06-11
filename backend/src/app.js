@@ -6,7 +6,8 @@ import securityMiddleware from "./core/middlewares/security.middleware.js";
 import staticMiddleware from "./core/middlewares/static.middleware.js";
 import { API_PREFIX, API_VERSION } from "./shared/constants/api.constants.js";
 import { APP_NAME } from "./shared/constants/app.constants.js";
-
+import { initializePassport } from "./core/middlewares/passport.middleware.js";
+import errorHandler from "./core/middlewares/error.middleware.js";
 const app = express();
 
 // Set application-level settings
@@ -29,6 +30,10 @@ staticMiddleware(app);
 
 import router from "./routes/index.js";
 
+
+app.use(initializePassport);
+
 app.use(API_PREFIX, router);
 
+app.use(errorHandler)
 export { app };
