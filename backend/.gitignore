@@ -21,7 +21,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Environment files
 .env
 .env.*
-!.env.example
 !.env.ci
 
 # System files

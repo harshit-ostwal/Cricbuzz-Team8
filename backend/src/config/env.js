@@ -1,0 +1,21 @@
+import dotenv from 'dotenv'
+dotenv.config()
+import z from 'zod'
+import appConstant from '../constants/app.constant.js'
+
+
+const envSchema = z.object({
+    PORT : z.coerce.number().default(appConstant.PORT),
+    MONGO_URL : z.string().default(appConstant.MONGO_URL),
+    NODE_ENV  : z.string().default(appConstant.NODE_ENV),
+    LOGGER_LEVEL : z.string().default(appConstant.LOGGER_LEVEL)
+})
+
+
+const parsed = envSchema.safeParse(process.env)
+
+if (!parsed.success) {
+    console.log("Check your env")
+}
+
+export default parsed.data
