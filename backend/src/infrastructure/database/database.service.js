@@ -24,7 +24,7 @@ class DatabaseService {
     try {
       loggerService.info("Disconnecting from the database...");
       await mongoose.disconnect().then(() => {
-        loggerService.info("Disconnected from MongoDB successfully");
+        loggerService.info("Successfully disconnected from the database.");
       });
     } catch (error) {
       if (error instanceof ApiError) {
@@ -39,8 +39,9 @@ class DatabaseService {
 
   async healthCheck() {
     try {
+      loggerService.info("Performing database health check...");
       await mongoose.connection.db.admin().ping();
-      loggerService.info("MongoDB connection is healthy");
+      loggerService.info("Database health check successful.");
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
