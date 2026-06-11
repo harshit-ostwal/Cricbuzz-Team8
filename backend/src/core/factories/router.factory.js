@@ -7,4 +7,4 @@ const createRouter = () =>
     strict: true,
   });
 
-export { createRouter };
+export default createRouter;

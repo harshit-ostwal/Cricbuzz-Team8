@@ -2,24 +2,78 @@
   "name": "cric-buzz-app",
   "version": "1.0.0",
   "description": "A cricket score application built with Node.js and Express.",
-  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Harshit Ostwal",
+    "email": "harshitostwal1234@gmail.com",
+    "url": "https://harshitostwal.com"
+  },
+  "contributors": [
+    {
+      "name": "Harshit Ostwal",
+      "email": "harshitostwal1234@gmail.com",
+      "url": "https://harshitostwal.com"
+    },
+    {
+      "name": "Praful Koli",
+      "email": "kolipraful98@gmail.com",
+      "url": "https://github.com/praful-koli"
+    },
+    {
+      "name": "Sneha",
+      "url": "https://github.com/SnehaSharnagat01"
+    }
+  ],
+  "main": "src/index.js",
+  "module": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "dev:nodemon": "cross-env NODE_ENV=development nodemon src/index.js",
+    "dev": "cross-env NODE_ENV=development bun --hot src/index.js",
+    "start": "cross-env NODE_ENV=production bun src/index.js",
+    "start:prod": "cross-env NODE_ENV=production prisma migrate deploy && cross-env NODE_ENV=production bun src/index.js",
     "biome": "bun biome:clean && bun biome:format && bun biome:check && bun biome:lint",
     "biome:format": "bunx biome format --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
     "biome:lint": "bunx biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
     "biome:check": "bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --max-diagnostics=none",
-    "biome:clean": "bunx biome clean"
+    "biome:clean": "bunx biome clean",
+    "prepare": "husky"
   },
-  "license": "ISC",
-  "type": "module",
+  "lint-staged": {
+    "*": [
+      "bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true",
+      "bunx biome format --write --no-errors-on-unmatched --files-ignore-unknown=true",
+      "bunx biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true"
+    ]
+  },
   "dependencies": {
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "helmet": "^8.2.0",
+    "hpp": "^0.2.3",
+    "husky": "^9.1.7",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.7.0",
+    "morgan": "^1.11.0",
+    "uuid": "^14.0.0",
+    "nodemon": "^3.1.14",
+    "winston": "^3.19.0",
+    "zod": "^4.4.3",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "multer": "^2.1.1",
+    "node-cron": "^4.2.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14",
-    "@biomejs/biome": "^2.4.16"
+    "@biomejs/biome": "^2.4.16",
+    "cross-env": "^10.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5"
   }
 }
