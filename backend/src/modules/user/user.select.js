@@ -1,10 +1,10 @@
 const UserSelect = {
-  _id: true,
-  email: true,
-  role: true,
-  isVerified: true,
-  createdAt: true,
-  updatedAt: true,
+  id: 1,
+  email: 1,
+  role: 1,
+  isVerified: 1,
+  createdAt: 1,
+  updatedAt: 1,
 };
 
-export { UserSelect };
+export default UserSelect;
