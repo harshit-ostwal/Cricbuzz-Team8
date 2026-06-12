@@ -13,14 +13,15 @@ if (fs.existsSync(envFile)) {
   console.info(`\n 🌱 Loaded environment variables from: ${envFile} \n`);
 } else if (fs.existsSync(defaultEnvFile)) {
   console.warn(
-    `\n ⚠️ ${envFile} not found. Falling back to ${defaultEnvFile}. \n`
+    `\n ⚠️ ${envFile} not found. Falling back to ${defaultEnvFile}. \n`,
   );
   path = defaultEnvFile;
   console.info(`\n 🌱 Loaded environment variables from: ${defaultEnvFile} \n`);
 } else {
   console.error(
-    `\n ❌ No environment file found. Please create either ${envFile} or ${defaultEnvFile}. \n`
+    `\n ❌ No environment file found. Please create either ${envFile} or ${defaultEnvFile}. \n`,
   );
+  process.exit(1);
 }
 
 config({
@@ -40,8 +41,9 @@ const env = parsedEnv.success ? parsedEnv.data : {};
 if (!parsedEnv.success) {
   console.error(
     "❌ Invalid environment variables:",
-    parsedEnv.error.flatten().fieldErrors
+    parsedEnv.error.flatten().fieldErrors,
   );
+  process.exit(1);
 }
 
 export const {
@@ -65,6 +67,30 @@ export const {
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
 
+  // oAuth
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
+
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GITHUB_CALLBACK_URL,
+
+  // Mail
+  MAIL_PROVIDER,
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_SECURE,
+
   // Cookies
   COOKIE_SECRET_KEY,
+
+  // JWT
+  ACCESS_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_EXPIRY_MS,
 } = env;
