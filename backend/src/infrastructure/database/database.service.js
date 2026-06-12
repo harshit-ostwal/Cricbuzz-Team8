@@ -7,9 +7,8 @@ class DatabaseService {
   async connect() {
     try {
       loggerService.info("Connecting to the database...");
-      await mongoose.connect(DATABASE_URL).then(() => {
-        loggerService.info("Successfully connected to the database.");
-      });
+      await mongoose.connect(DATABASE_URL);
+      loggerService.info("Successfully connected to the database.");
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
@@ -23,9 +22,8 @@ class DatabaseService {
   async disconnect() {
     try {
       loggerService.info("Disconnecting from the database...");
-      await mongoose.disconnect().then(() => {
-        loggerService.info("Successfully disconnected from the database.");
-      });
+      await mongoose.disconnect();
+      loggerService.info("Successfully disconnected from the database.");
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
@@ -50,6 +48,26 @@ class DatabaseService {
       throw ApiError.serviceUnavailable("Database health check failed.", [
         error,
       ]);
+    }
+  }
+
+  async transaction(callback) {
+    const session = await mongoose.startSession();
+
+    try {
+      return await session.withTransaction(() => {
+        callback(session);
+      });
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      loggerService.error("Database transaction failed.", error);
+      throw ApiError.internalServerError("Database transaction failed.", [
+        error,
+      ]);
+    } finally {
+      await session.endSession();
     }
   }
 }
