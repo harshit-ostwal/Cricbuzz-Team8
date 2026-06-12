@@ -25,7 +25,7 @@ class UserRepository {
       {
         returnDocument: "after",
         runValidators: true,
-      },
+      }
     ).select(UserSelect);
   }
 
@@ -40,7 +40,7 @@ class UserRepository {
       {
         returnDocument: "after",
         runValidators: true,
-      },
+      }
     ).select(UserSelect);
   }
 

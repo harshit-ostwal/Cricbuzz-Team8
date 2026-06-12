@@ -16,7 +16,7 @@ class ProfileController {
 
     return ApiResponse.ok(
       new ProfileDto(profile),
-      "Profile fetched successfully",
+      "Profile fetched successfully"
     ).send(res);
   });
 
@@ -28,12 +28,12 @@ class ProfileController {
     const profile = await this.#profileService.create(
       userId,
       data,
-      avatarLocalFile,
+      avatarLocalFile
     );
 
     return ApiResponse.created(
       new ProfileDto(profile),
-      "Profile created successfully",
+      "Profile created successfully"
     ).send(res);
   });
 
@@ -45,12 +45,12 @@ class ProfileController {
     const profile = await this.#profileService.update(
       userId,
       data,
-      avatarLocalFile,
+      avatarLocalFile
     );
 
     return ApiResponse.ok(
       new ProfileDto(profile),
-      "Profile updated successfully",
+      "Profile updated successfully"
     ).send(res);
   });
 }

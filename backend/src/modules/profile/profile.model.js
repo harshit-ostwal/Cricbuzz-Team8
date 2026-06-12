@@ -28,7 +28,7 @@ const profileSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Profile =

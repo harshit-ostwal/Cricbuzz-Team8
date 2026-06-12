@@ -10,7 +10,7 @@ const mailProvider = providers[MAIL_PROVIDER];
 
 if (!mailProvider) {
   throw ApiError.internalServerError(
-    `Unsupported mail provider: ${MAIL_PROVIDER}`,
+    `Unsupported mail provider: ${MAIL_PROVIDER}`
   );
 }
 

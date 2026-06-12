@@ -33,7 +33,7 @@ class UserService {
 
     if (existingUser && !existingUser.isDeleted) {
       throw ApiError.badRequest(
-        "Email already exists, Please try again later.",
+        "Email already exists, Please try again later."
       );
     }
 

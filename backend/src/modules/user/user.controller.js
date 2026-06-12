@@ -16,7 +16,7 @@ class UserController {
 
     return ApiResponse.ok(
       new UserDto(user),
-      "User retrieved successfully",
+      "User retrieved successfully"
     ).send(res);
   });
 
@@ -27,7 +27,7 @@ class UserController {
 
     return ApiResponse.ok(
       new UserDto(user),
-      "User retrieved successfully",
+      "User retrieved successfully"
     ).send(res);
   });
 
@@ -38,7 +38,7 @@ class UserController {
 
     return ApiResponse.created(
       new UserDto(user),
-      "User created successfully",
+      "User created successfully"
     ).send(res);
   });
 
@@ -49,7 +49,7 @@ class UserController {
     const user = await this.#userService.update(id, data);
 
     return ApiResponse.ok(new UserDto(user), "User updated successfully").send(
-      res,
+      res
     );
   });
 
@@ -60,7 +60,7 @@ class UserController {
 
     return ApiResponse.ok(
       new UserDto(user),
-      "User soft-deleted successfully",
+      "User soft-deleted successfully"
     ).send(res);
   });
 

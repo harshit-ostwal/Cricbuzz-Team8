@@ -24,14 +24,14 @@ class ProfileService {
 
     if (existingProfile) {
       throw ApiError.conflict(
-        "Profile already exists for this user. Please try again later.",
+        "Profile already exists for this user. Please try again later."
       );
     }
 
     if (avatarLocalFile && !data.avatar) {
       const avatar = await CloudinaryManager.uploadImage(
         avatarLocalFile,
-        "Profiles",
+        "Profiles"
       );
 
       if (avatar?.secure_url) {
@@ -47,7 +47,7 @@ class ProfileService {
         await CloudinaryManager.deleteImage(data.avatarPublicId);
       }
       throw ApiError.internalServerError(
-        "Failed to create profile. Please try again later.",
+        "Failed to create profile. Please try again later."
       );
     }
 
@@ -62,7 +62,7 @@ class ProfileService {
     if (avatarLocalFile) {
       const avatar = await CloudinaryManager.uploadImage(
         avatarLocalFile,
-        "Profiles",
+        "Profiles"
       );
 
       if (avatar?.secure_url) {
@@ -78,7 +78,7 @@ class ProfileService {
         await CloudinaryManager.deleteImage(hasUpdates.avatarPublicId);
       }
       throw ApiError.internalServerError(
-        "Failed to update profile. Please try again later.",
+        "Failed to update profile. Please try again later."
       );
     }
 

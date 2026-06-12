@@ -22,7 +22,7 @@ class ProfileRepository {
       {
         returnDocument: "after",
         runValidators: true,
-      },
+      }
     ).select(ProfileSelect);
   }
 }

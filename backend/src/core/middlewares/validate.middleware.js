@@ -10,7 +10,7 @@ const validate = (schema, source = ValidationSource.BODY) => {
       if (!result.success) {
         const flattenError = result.error.flatten();
         return next(
-          ApiError.validationError("Validation Error", [flattenError]),
+          ApiError.validationError("Validation Error", [flattenError])
         );
       }
 
@@ -20,7 +20,7 @@ const validate = (schema, source = ValidationSource.BODY) => {
       if (error instanceof ZodError) {
         const flattenError = error.flatten();
         return next(
-          ApiError.validationError("Validation Error", [flattenError]),
+          ApiError.validationError("Validation Error", [flattenError])
         );
       }
 

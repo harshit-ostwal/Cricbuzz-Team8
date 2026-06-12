@@ -34,7 +34,7 @@ const accountModel = new Schema(
       required: "Provider ID is required",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 accountModel.index(
@@ -44,7 +44,7 @@ accountModel.index(
   },
   {
     unique: true,
-  },
+  }
 );
 
 accountModel.index(
@@ -54,7 +54,7 @@ accountModel.index(
   },
   {
     unique: true,
-  },
+  }
 );
 
 accountModel.index({

@@ -15,7 +15,7 @@ const router = createRouter();
 router.get(
   "/email/:email",
   validate(emailParamSchema, ValidationSource.PARAMS),
-  userController.getByEmail,
+  userController.getByEmail
 );
 
 /**
@@ -26,7 +26,7 @@ router.get(
 router.get(
   "/:id",
   validate(idParamSchema, ValidationSource.PARAMS),
-  userController.getById,
+  userController.getById
 );
 
 /**
@@ -38,7 +38,7 @@ router.patch(
   "/:id",
   validate(idParamSchema, ValidationSource.PARAMS),
   validate(updateUserSchema, ValidationSource.BODY),
-  userController.update,
+  userController.update
 );
 
 /**
@@ -49,7 +49,7 @@ router.patch(
 router.delete(
   "/:id/soft",
   validate(idParamSchema, ValidationSource.PARAMS),
-  userController.softDelete,
+  userController.softDelete
 );
 
 /**
@@ -60,7 +60,7 @@ router.delete(
 router.delete(
   "/:id/hard",
   validate(idParamSchema, ValidationSource.PARAMS),
-  userController.delete,
+  userController.delete
 );
 
 export default router;

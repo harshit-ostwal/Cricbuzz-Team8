@@ -16,7 +16,7 @@ router.use("/docs", swaggerUi.serve, swaggerUi.setup(specs, theme));
  */
 router.get("/", (_, res) => {
   return ApiResponse.ok(null, `Welcome to the ${APP_NAME} API Service`).send(
-    res,
+    res
   );
 });
 
@@ -41,7 +41,7 @@ router.use("/users", (await import("../modules/user/user.route.js")).default);
  */
 router.use(
   "/profile",
-  (await import("../modules/profile/profile.route.js")).default,
+  (await import("../modules/profile/profile.route.js")).default
 );
 
 export default router;

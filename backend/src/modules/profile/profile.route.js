@@ -16,7 +16,7 @@ const router = createRouter();
 router.get(
   "/",
   validate(userIdParamSchema, ValidationSource.USER),
-  profileController.getProfileByUserId,
+  profileController.getProfileByUserId
 );
 
 /**
@@ -29,7 +29,7 @@ router.post(
   upload.single("avatar"),
   validate(userIdParamSchema, ValidationSource.USER),
   validate(createProfileSchema),
-  profileController.createProfile,
+  profileController.createProfile
 );
 
 /**
@@ -42,7 +42,7 @@ router.patch(
   upload.single("avatar"),
   validate(userIdParamSchema, ValidationSource.USER),
   validate(updateProfileSchema),
-  profileController.updateProfile,
+  profileController.updateProfile
 );
 
 export default router;

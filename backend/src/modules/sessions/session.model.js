@@ -37,7 +37,7 @@ const sessionModel = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 sessionModel.index({
