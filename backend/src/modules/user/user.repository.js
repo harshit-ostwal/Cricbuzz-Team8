@@ -17,19 +17,29 @@ class UserRepository {
   }
 
   async update(id, data) {
-    return await User.findByIdAndUpdate(id, data, {
-      new: true,
-    }).select(UserSelect);
+    return await User.findByIdAndUpdate(
+      id,
+      {
+        $set: data,
+      },
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    ).select(UserSelect);
   }
 
   async softDelete(id) {
     return await User.findByIdAndUpdate(
       id,
       {
-        isDeleted: true,
+        $set: {
+          isDeleted: true,
+        },
       },
       {
-        new: true,
+        returnDocument: "after",
+        runValidators: true,
       },
     ).select(UserSelect);
   }

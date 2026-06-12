@@ -6,8 +6,18 @@ import { createProfileSchema, updateProfileSchema } from "./profile.schema.js";
 
 const router = createRouter();
 
+/**
+ * @route GET / *
+ * @desc  Profile management endpoints
+ * @access Private (requires authentication)
+ */
 router.get("/", profileController.getProfileByUserId);
 
+/**
+ * @route POST / *
+ * @desc  Profile management endpoints
+ * @access Private (requires authentication)
+ */
 router.post(
   "/",
   upload.single("avatar"),
@@ -15,6 +25,11 @@ router.post(
   profileController.createProfile,
 );
 
+/**
+ * @route PATCH / *
+ * @desc  Profile management endpoints
+ * @access Private (requires authentication)
+ */
 router.patch(
   "/",
   upload.single("avatar"),

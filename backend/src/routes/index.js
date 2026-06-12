@@ -27,10 +27,20 @@ router.get("/", (_, res) => {
  */
 router.use("/health", healthRoute);
 
+/**
+ * @route GET /users *
+ * @desc  User management endpoints
+ * @access Public
+ */
 router.use("/users", (await import("../modules/user/user.route.js")).default);
 
+/**
+ * @route GET /profiles *
+ * @desc  Profile management endpoints
+ * @access Private (requires authentication)
+ */
 router.use(
-  "/profiles",
+  "/profile",
   (await import("../modules/profile/profile.route.js")).default,
 );
 

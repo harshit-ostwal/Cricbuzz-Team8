@@ -3,26 +3,25 @@ import ProfileSelect from "./profile.select.js";
 
 class ProfileRepository {
   async findByUserId(userId) {
-    return await Profile.findOne({
-      user: userId,
-    }).select(ProfileSelect);
+    return await Profile.findById(userId).select(ProfileSelect);
   }
 
   async create(userId, data) {
     return await Profile.create({
-      user: userId,
+      _id: userId,
       ...data,
     });
   }
 
   async updateByUserId(userId, data) {
-    return await Profile.findOneAndUpdate(
+    return Profile.findByIdAndUpdate(
+      userId,
       {
-        user: userId,
+        $set: data,
       },
-      data,
       {
-        new: true,
+        returnDocument: "after",
+        runValidators: true,
       },
     ).select(ProfileSelect);
   }

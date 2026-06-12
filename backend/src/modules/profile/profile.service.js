@@ -19,7 +19,7 @@ class ProfileService {
     return profile;
   }
 
-  async create(userId, data) {
+  async create(userId, data, avatarLocalFile) {
     const existingProfile = await this.#profileRepo.findByUserId(userId);
 
     if (existingProfile) {
@@ -54,7 +54,7 @@ class ProfileService {
     return profile;
   }
 
-  async update(userId, data) {
+  async update(userId, data, avatarLocalFile) {
     const existingProfile = await this.getProfileByUserId(userId);
 
     const hasUpdates = getChangedFields(existingProfile, data);
