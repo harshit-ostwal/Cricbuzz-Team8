@@ -1,15 +1,15 @@
 import User from "./user.model.js";
-import userSelect from "./user.select.js";
+import UserSelect from "./user.select.js";
 
 class UserRepository {
   async findById(id) {
-    return await User.findById(id).select(userSelect);
+    return await User.findById(id).select(UserSelect);
   }
 
   async findByEmail(email) {
     return await User.findOne({
       email,
-    }).select(userSelect);
+    }).select(UserSelect);
   }
 
   async create(data) {
@@ -19,7 +19,7 @@ class UserRepository {
   async update(id, data) {
     return await User.findByIdAndUpdate(id, data, {
       new: true,
-    }).select(userSelect);
+    }).select(UserSelect);
   }
 
   async softDelete(id) {
@@ -31,11 +31,11 @@ class UserRepository {
       {
         new: true,
       },
-    ).select(userSelect);
+    ).select(UserSelect);
   }
 
   async delete(id) {
-    return await User.findByIdAndDelete(id).select(userSelect);
+    return await User.findByIdAndDelete(id).select(UserSelect);
   }
 }
 

@@ -7,9 +7,15 @@ const profileSchema = new Schema({
     required: "User ID is required",
   },
   fullName: {
-    type: String,
-    required: "Full name is required",
-    trim: true,
+    firstName: {
+      type: String,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+    },
+    required: "Full Name is required",
   },
   avatar: {
     type: String,
