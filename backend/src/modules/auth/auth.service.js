@@ -1,7 +1,7 @@
 import UserRepository from "../../repository/user.repository.js";
 import { generateTokens } from "../../core/security/jwt.security.js";
 import ApiError from "../../core/http/api.error.js";
-import { hashValue } from "../../core/security/hash.security.js";
+import { compareHash, hashValue } from "../../core/security/hash.security.js";
 class AuthService {
   constructor() {
     this.userRepo = new UserRepository();
@@ -63,7 +63,7 @@ class AuthService {
   async register(data) {
     const { name, email, password, role } = data;
 
-    // check user exist or not already register thow error
+    // check user exist or not already register throw error
     const existingUser = await this.userRepo.findByEmail(email);
 
     if (existingUser) {
@@ -79,21 +79,53 @@ class AuthService {
       password: hashPassword,
       role,
     });
- 
+
     if (!newUser) {
-        throw  ApiError.badRequest("User could not be created")
+      throw ApiError.badRequest("User could not be created");
     }
-    
-    // generate token 
-    
-    const tokens = await generateTokens(newUser)
+
+    // generate token
+
+    const tokens = await generateTokens(newUser);
 
     if (!tokens) {
-       throw  ApiError.internalServerError("Failed to generate tokens")
+      throw ApiError.internalServerError("Failed to generate tokens");
     }
-  
-     newUser = {...newUser._doc , ...tokens}
-     return newUser
+
+    newUser = { ...newUser._doc, ...tokens };
+    return newUser;
+  }
+
+  async login(data) {
+    const { email, password } = data;
+
+    // check user exist or not throw error
+    let user = await this.userRepo.findByEmail(email);
+
+    if (!user) {
+      throw ApiError.notFound("User not found with this email");
+    }
+
+    //  check password is valid or not
+
+    const isPassword = await compareHash(password, user.password);
+
+    if (!isPassword) {
+      throw ApiError.unauthorized("Invalid password");
+    }
+
+    // If email and password is correct then return user and generate token
+
+    // generate token
+
+    const tokens = await generateTokens(user);
+
+    if (!tokens) {
+      throw ApiError.internalServerError("Failed to generate tokens");
+    }
+
+    user = { ...user._doc, ...tokens };
+    return user;
   }
 }
 

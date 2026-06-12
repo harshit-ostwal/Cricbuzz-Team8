@@ -3,7 +3,7 @@ import passport from "passport";
 import { authController } from "./auth.controller.js";
 import asyncHandler from "../../core/middlewares/async-handler.middleware.js";
 import validate from "../../core/middlewares/validation.middleware.js";
-import registerValidation from "./auth.validtion.js";
+import {loginValidation, registerValidation} from "./auth.validtion.js";
 
 const router = createRouter();
 
@@ -38,5 +38,15 @@ router.post(
   validate,
   asyncHandler(authController.register.bind(authController)),
 );
+
+/**
+ * @path /api/v1/auth/login
+ * @access Public
+ * @description login user using email and password 
+ * @json {"name": "Praful","email": "praful@gmail.com",}
+ */
+
+
+router.post("/login" , loginValidation , validate , asyncHandler(authController.login).bind(authController))
 
 export default router;

@@ -8,7 +8,7 @@ import {
   REGEX_EMAIL,
 } from "../../shared/constants/regex.constants.js";
 
-export default  [
+export const registerValidation =  [
   body("name")
     .trim()
     .notEmpty()
@@ -44,3 +44,28 @@ export default  [
     .isIn(Object.values(ROLES))
     .withMessage("Invalid role"),
 ];
+
+
+export const loginValidation = [
+ body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required")
+    .matches(REGEX_EMAIL)
+    .withMessage("Invalid email"),
+
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is required")
+    .isLength({ min: 8 })
+    .withMessage("Password muct be at least 8 characters")
+    .matches(REGEX_LOWERCASE)
+    .withMessage("Password must contain  at least 1 Lowercase letter")
+    .matches(REGEX_UPPERCASE)
+    .withMessage("Password must contain  at least 1 Uppercase letter")
+    .matches(REGEX_NUMBER)
+    .withMessage("Password must contain  at least 1 Number")
+    .matches(REGEX_SPECIAL_CHAR)
+    .withMessage("Password must contain at least 1 Special character"),
+]
