@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {ROLES} from '../shared/constants/user.constants.js'
+import { ROLES } from "../shared/constants/user.constants.js";
 
 const userSchema = new Schema(
   {
@@ -14,10 +14,15 @@ const userSchema = new Schema(
     password: { type: String },
     role: { type: String, enum: Object.values(ROLES), default: ROLES.SCORER },
     isDeleted: { type: Boolean, default: false },
+    ProfileImage: {
+      type: String,
+      default:
+        "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+    },
   },
   { timestamps: true },
 );
 
-const userModel = model("users" , userSchema)
+const userModel = model("users", userSchema);
 
-export default userModel
+export default userModel;

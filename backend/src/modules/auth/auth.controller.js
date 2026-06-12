@@ -1,5 +1,5 @@
 import ApiResponse from "../../core/http/api.response.js";
-
+import { setAuthCookies } from "../../shared/utils/cookie.utils.js";
 class AuthController {
   async googleCallback(req, res) {
     const result = req.user;
@@ -18,8 +18,14 @@ class AuthController {
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
     };
+    
+    setAuthCookies(res , responseData.accessToken , responseData.refreshToken)
 
     return ApiResponse.ok(responseData, "Google login successful").send(res);
+  }
+
+  async  login(req, res) {
+    
   }
 }
 

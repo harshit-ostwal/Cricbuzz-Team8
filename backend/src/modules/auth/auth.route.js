@@ -9,6 +9,7 @@ router.get(
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
+    prompt : "select_account"
   }),
 );
 
@@ -19,7 +20,8 @@ router.get(
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
-  asyncHandler(authController.googleCallback)
+  // change wrap with bind
+  asyncHandler(authController.googleCallback.bind(authController))
 );
 
 
