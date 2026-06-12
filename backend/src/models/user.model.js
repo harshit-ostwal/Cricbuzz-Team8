@@ -14,7 +14,7 @@ const userSchema = new Schema(
     password: { type: String },
     role: { type: String, enum: Object.values(ROLES), default: ROLES.SCORER },
     isDeleted: { type: Boolean, default: false },
-    ProfileImage: {
+    profileImage: {
       type: String,
       default:
         "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",

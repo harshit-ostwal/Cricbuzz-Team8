@@ -1,7 +1,7 @@
 import UserRepository from "../../repository/user.repository.js";
 import { generateTokens } from "../../core/security/jwt.security.js";
 import ApiError from "../../core/http/api.error.js";
-
+import { hashValue } from "../../core/security/hash.security.js";
 class AuthService {
   constructor() {
     this.userRepo = new UserRepository();
@@ -52,12 +52,48 @@ class AuthService {
       }
 
       return {
-        ...user, 
+        ...user,
         ...tokens,
       };
     } catch (error) {
       throw ApiError.from(error);
     }
+  }
+
+  async register(data) {
+    const { name, email, password, role } = data;
+
+    // check user exist or not already register thow error
+    const existingUser = await this.userRepo.findByEmail(email);
+
+    if (existingUser) {
+      throw ApiError.conflict("User already exists with this email");
+    }
+
+    // If User is new generate hashPassword and create new user in db
+    const hashPassword = await hashValue(password);
+
+    let newUser = await this.userRepo.create({
+      name,
+      email,
+      password: hashPassword,
+      role,
+    });
+ 
+    if (!newUser) {
+        throw  ApiError.badRequest("User could not be created")
+    }
+    
+    // generate token 
+    
+    const tokens = await generateTokens(newUser)
+
+    if (!tokens) {
+       throw  ApiError.internalServerError("Failed to generate tokens")
+    }
+  
+     newUser = {...newUser._doc , ...tokens}
+     return newUser
   }
 }
 

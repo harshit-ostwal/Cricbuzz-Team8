@@ -1,7 +1,10 @@
 import createRouter from "../../core/factories/router.factory.js";
-import passport from 'passport'
-import {authController} from "./auth.controller.js";
+import passport from "passport";
+import { authController } from "./auth.controller.js";
 import asyncHandler from "../../core/middlewares/async-handler.middleware.js";
+import validate from "../../core/middlewares/validation.middleware.js";
+import registerValidation from "./auth.validtion.js";
+
 const router = createRouter();
 
 router.get(
@@ -9,10 +12,9 @@ router.get(
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
-    prompt : "select_account"
+    prompt: "select_account",
   }),
 );
-
 
 router.get(
   "/google/callback",
@@ -21,8 +23,20 @@ router.get(
     session: false,
   }),
   // change wrap with bind
-  asyncHandler(authController.googleCallback.bind(authController))
+  asyncHandler(authController.googleCallback.bind(authController)),
 );
 
+/**
+ *  @path /api/v1/auth/register
+ *  @access Public
+ *  @description Create new user
+ *  @josn {"name": "Praful","email": "praful@gmail.com","password": "12345678","role": "SCORER"}
+ */
+router.post(
+  "/register",
+  registerValidation,
+  validate,
+  asyncHandler(authController.register.bind(authController)),
+);
 
-export default router
+export default router;
