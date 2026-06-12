@@ -16,7 +16,7 @@ router.use("/docs", swaggerUi.serve, swaggerUi.setup(specs, theme));
  */
 router.get("/", (_, res) => {
   return ApiResponse.ok(null, `Welcome to the ${APP_NAME} API Service`).send(
-    res
+    res,
   );
 });
 
@@ -26,5 +26,7 @@ router.get("/", (_, res) => {
  * @access Public
  */
 router.use("/health", healthRoute);
+
+router.use("/users", (await import("../modules/user/user.route.js")).default);
 
 export default router;
