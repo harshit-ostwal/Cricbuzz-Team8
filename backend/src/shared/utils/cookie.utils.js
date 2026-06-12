@@ -1,15 +1,12 @@
-// import {
-//   cookieAccessOptions,
-//   cookieRefreshOptions,
-// } from "../../config/cors.config.js";
-
 import {
-   app_config
-} from '.././constants/app.constants.js'
+  cookieAccessOptions,
+  cookieRefreshOptions,
+} from "../../config/security/cookie.config.js";
+
 
 const setAuthCookies = (res, accessToken, refreshToken) => {
-  res.cookie("accessToken", accessToken, app_config.cookie.cookieAccessOptions);
-  res.cookie("refreshToken", refreshToken, app_config.cookie.cookieRefreshOptions);
+  res.cookie("accessToken", accessToken, cookieAccessOptions);
+  res.cookie("refreshToken", refreshToken, cookieRefreshOptions );
 };
 
 const clearAuthCookies = (res) => {
