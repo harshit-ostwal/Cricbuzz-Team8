@@ -29,4 +29,9 @@ router.use("/health", healthRoute);
 
 router.use("/users", (await import("../modules/user/user.route.js")).default);
 
+router.use(
+  "/profiles",
+  (await import("../modules/profile/profile.route.js")).default,
+);
+
 export default router;

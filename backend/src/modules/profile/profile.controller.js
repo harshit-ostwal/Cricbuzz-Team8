@@ -1,5 +1,6 @@
 import ApiResponse from "../../core/http/api.response.js";
 import asyncHandler from "../../core/middlewares/async-handler.middleware.js";
+import { ProfileDto } from "./profile.dto.js";
 import { ProfileService } from "./profile.service.js";
 
 class ProfileController {
@@ -13,7 +14,10 @@ class ProfileController {
 
     const profile = await this.#profileService.getProfileByUserId(userId);
 
-    return ApiResponse.ok(res, "Profile fetched successfully", profile);
+    return ApiResponse.ok(
+      new ProfileDto(profile),
+      "Profile fetched successfully",
+    ).send(res);
   });
 
   createProfile = asyncHandler(async (req, res) => {
@@ -27,7 +31,10 @@ class ProfileController {
       avatarLocalFile,
     );
 
-    return ApiResponse.created(res, "Profile created successfully", profile);
+    return ApiResponse.created(
+      new ProfileDto(profile),
+      "Profile created successfully",
+    ).send(res);
   });
 
   updateProfile = asyncHandler(async (req, res) => {
@@ -41,7 +48,10 @@ class ProfileController {
       avatarLocalFile,
     );
 
-    return ApiResponse.ok(res, "Profile updated successfully", profile);
+    return ApiResponse.ok(
+      new ProfileDto(profile),
+      "Profile updated successfully",
+    ).send(res);
   });
 }
 
