@@ -31,7 +31,7 @@ const generateToken = (user, type) => {
       issuer: `${APP_NAME} - ${DEVELOPER_NAME}`,
       audience: `${APP_NAME} - Users`,
       jwtid: crypto.randomUUID(),
-    },
+    }
   );
 
   if (type === TOKEN_TYPE.ACCESS) {
@@ -51,7 +51,7 @@ const verifyToken = (token, type) => {
         algorithms: [JWT_ALGORITHM],
         issuer: `${APP_NAME} - ${DEVELOPER_NAME}`,
         audience: `${APP_NAME} - Users`,
-      },
+      }
     );
   } catch (error) {
     throw error.name === "TokenExpiredError"
@@ -70,7 +70,7 @@ const generateTokens = (user) => {
 
     hashedRefreshToken: refreshToken.hashedToken,
     refreshTokenExpiresAt: new Date(
-      Date.now() + parseInt(REFRESH_TOKEN_EXPIRY_MS, 10),
+      Date.now() + parseInt(REFRESH_TOKEN_EXPIRY_MS, 10)
     ),
   };
 };

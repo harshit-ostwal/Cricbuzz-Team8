@@ -4,6 +4,7 @@ const ValidationSource = Object.freeze({
   HEADER: "header",
   PARAMS: "params",
   COOKIES: "cookies",
+  USER: "user",
 });
 
 export default ValidationSource;
