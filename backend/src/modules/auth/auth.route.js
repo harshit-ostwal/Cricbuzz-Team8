@@ -3,27 +3,35 @@ import passport from "passport";
 import { authController } from "./auth.controller.js";
 import asyncHandler from "../../core/middlewares/async-handler.middleware.js";
 import validate from "../../core/middlewares/validation.middleware.js";
-import {loginValidation, registerValidation} from "./auth.validtion.js";
+import { loginValidation, registerValidation } from "./auth.validtion.js";
+import { authGuard, callbackGuard } from "./guards/auth.gurad.js";
 
 const router = createRouter();
-
-router.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    session: false,
-    prompt: "select_account",
-  }),
-);
+/**
+ * @path /api/v1/auth/google
+ * @access Public
+ * @description loing with google account
+ */
+router.get("/google", authGuard("google"));
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
-    session: false,
-  }),
-  // change wrap with bind
-  asyncHandler(authController.googleCallback.bind(authController)),
+  callbackGuard("google"),
+  asyncHandler(authController.oauthController.bind(authController)),
+);
+
+/**
+ * @path /api/v1/auth/github
+ * @acess public
+ * @description login with gith account
+ */
+
+router.get("/github", authGuard("github"));
+
+router.get(
+  "/github/callback",
+  callbackGuard("github"),
+  asyncHandler(authController.oauthControlle),
 );
 
 /**
@@ -42,11 +50,15 @@ router.post(
 /**
  * @path /api/v1/auth/login
  * @access Public
- * @description login user using email and password 
+ * @description login user using email and password
  * @json {"name": "Praful","email": "praful@gmail.com",}
  */
 
-
-router.post("/login" , loginValidation , validate , asyncHandler(authController.login).bind(authController))
+router.post(
+  "/login",
+  loginValidation,
+  validate,
+  asyncHandler(authController.login).bind(authController),
+);
 
 export default router;

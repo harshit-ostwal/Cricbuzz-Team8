@@ -1,58 +1,62 @@
-import UserRepository from "../../repository/user.repository.js";
+import AuthRepository from "../../repository/auth.repository.js";
 import { generateTokens } from "../../core/security/jwt.security.js";
 import ApiError from "../../core/http/api.error.js";
 import { compareHash, hashValue } from "../../core/security/hash.security.js";
+import { sanitizeUser } from "../../shared/utils/sanitizeUser.utils.js";
+import { email } from "zod";
 class AuthService {
   constructor() {
-    this.userRepo = new UserRepository();
+    this.userRepo = new AuthRepository();
   }
 
-  async findOrCreateGoogleUser(profile) {
+  async findOrCreateOAuthUser(profile, provider) {
     if (!profile) {
-      throw ApiError.badRequest("Google profile is required");
+      throw ApiError.badRequest(`${provider} profile is required`);
     }
+   
 
-    const googleId = profile.id;
-    const email = profile.emails?.[0]?.value;
-    const name = profile.displayName;
-    const avatar = profile.photos?.[0]?.value || "";
-
+    const providerId = profile?.account?.providerId;
+    const email = profile?.user?.email;
+    const name = profile?.user?.name || profile.username || "OAuth User";
+    const avatar = profile?.user?.avatar || "";
+   
     if (!email) {
-      throw ApiError.validationError("Google account must provide an email");
+      throw ApiError.validationError(`${provider} account must provide an email`);
     }
 
-    let user = await this.userRepo.findByGoogleId(googleId);
+    let user = await this.userRepo.findUserByProvider(provider, providerId);
 
     if (user) {
       return user;
     }
 
-    // If user not found, create new
+    user = await this.userRepo.findByEmail(email);
+
+    if (user) {
+      return await this.userRepo.updateById(user._id, {
+        provider,
+        providerId,
+        profileImage: avatar || user.ProfileImage,
+      });
+    }
+
     return await this.userRepo.create({
       name,
       email,
-      avatar,
-      provider: "GOOGLE",
-      googleId,
+      profileImage: avatar,
+      provider,
+      providerId,
     });
   }
 
-  async googleLogin(profile) {
+  async oauthLogin(profile, provider) {
     try {
-      const user = await this.findOrCreateGoogleUser(profile);
+      const user = await this.findOrCreateOAuthUser(profile, provider);
 
-      if (!user) {
-        throw ApiError.notFound("User could not be created or found");
-      }
-
-      const tokens = await generateTokens(user);
-
-      if (!tokens) {
-        throw ApiError.internalServerError("Failed to generate tokens");
-      }
+      const tokens = generateTokens(user);
 
       return {
-        ...user,
+        user: sanitizeUser(user),
         ...tokens,
       };
     } catch (error) {
@@ -60,72 +64,68 @@ class AuthService {
     }
   }
 
+  async googleLogin(profile) {
+    return this.oauthLogin(profile, "GOOGLE");
+  }
+
+  async githubLogin(profile) {
+    return this.oauthLogin(profile, "GITHUB");
+  }
+
   async register(data) {
     const { name, email, password, role } = data;
 
-    // check user exist or not already register throw error
     const existingUser = await this.userRepo.findByEmail(email);
 
     if (existingUser) {
       throw ApiError.conflict("User already exists with this email");
     }
 
-    // If User is new generate hashPassword and create new user in db
-    const hashPassword = await hashValue(password);
+    const hashedPassword = await hashValue(password);
 
-    let newUser = await this.userRepo.create({
+    const newUser = await this.userRepo.create({
       name,
       email,
-      password: hashPassword,
+      password: hashedPassword,
       role,
+      provider: "LOCAL",
     });
 
-    if (!newUser) {
-      throw ApiError.badRequest("User could not be created");
-    }
+    const tokens = generateTokens(newUser);
 
-    // generate token
-
-    const tokens = await generateTokens(newUser);
-
-    if (!tokens) {
-      throw ApiError.internalServerError("Failed to generate tokens");
-    }
-
-    newUser = { ...newUser._doc, ...tokens };
-    return newUser;
+    return {
+      user: sanitizeUser(newUser),
+      ...tokens,
+    };
   }
 
   async login(data) {
     const { email, password } = data;
 
-    // check user exist or not throw error
-    let user = await this.userRepo.findByEmail(email);
+    const user = await this.userRepo.findByEmailWithPassword(email);
 
     if (!user) {
-      throw ApiError.notFound("User not found with this email");
+      throw ApiError.unauthorized("Invalid email or password");
     }
 
-    //  check password is valid or not
-
-    const isPassword = await compareHash(password, user.password);
-
-    if (!isPassword) {
-      throw ApiError.unauthorized("Invalid password");
+    if (!user.password) {
+      throw ApiError.badRequest(
+        "This account was created using Google/GitHub. Please login with OAuth."
+      );
     }
 
-    // If email and password is correct then return user and generate token
+    const isPasswordValid = await compareHash(password, user.password);
 
-    // generate token
-
-    const tokens = await generateTokens(user);
-
-    if (!tokens) {
-      throw ApiError.internalServerError("Failed to generate tokens");
+    if (!isPasswordValid) {
+      throw ApiError.unauthorized("Invalid email or password");
     }
 
-    user = { ...user._doc, ...tokens };
-    return user;
+    const tokens = generateTokens(user);
+
+    return {
+      user: sanitizeUser(user),
+      ...tokens,
+    };
   }
 }
 

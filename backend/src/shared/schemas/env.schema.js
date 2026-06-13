@@ -54,6 +54,16 @@ const envSchema = z
     SMTP_PASSWORD: zString("SMTP_PASSWORD", 1, 512),
     SMTP_SECURE: zCoerce("SMTP_SECURE", "boolean"),
 
+    ACCESS_TOKEN_SECRET: zString("ACCESS_TOKEN_SECRET", 1, 512),
+    ACCESS_TOKEN_EXPIRY: zString("ACCESS_TOKEN_EXPIRY", 1, 32),
+    REFRESH_TOKEN_SECRET: zString("REFRESH_TOKEN_SECRET", 1, 512),
+    REFRESH_TOKEN_EXPIRY: zString("REFRESH_TOKEN_EXPIRY", 1, 32),
+    REFRESH_TOKEN_EXPIRY_MS: zCoerce("REFRESH_TOKEN_EXPIRY_MS", "number", {
+      min: 1,
+      max: Number.MAX_SAFE_INTEGER,
+      int: true,
+      positive: true,
+    }),
   })
   .strip();
 

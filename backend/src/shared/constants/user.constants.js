@@ -3,3 +3,9 @@ export const  ROLES = {
   ADMIN: "ADMIN",
   SCORER: "SCORER",
 }
+
+export const PROVIDER = {
+  LOCAL : "LOCAL",
+  GOOGLE : "GOOGLE",
+  GITHUB : "GITHUB"
+}

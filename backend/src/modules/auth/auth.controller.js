@@ -1,30 +1,16 @@
-import { email } from "zod";
 import ApiResponse from "../../core/http/api.response.js";
 import { setAuthCookies } from "../../shared/utils/cookie.utils.js";
+import { UserDto } from "../user/user.dto.js";
 import { authService } from "./auth.service.js";
 
 class AuthController {
-  async googleCallback(req, res) {
-    const result = req.user;
-
-    const user = {
-      id: result._doc._id,
-      name: result._doc.name,
-      email: result._doc.email,
-      role: result._doc.role,
-      isDeleted: result._doc.isDeleted,
-      createdAt: result._doc.createdAt,
-      updatedAt: result._doc.updatedAt,
-    };
-    const responseData = {
-      user,
-      accessToken: result.accessToken,
-      refreshToken: result.refreshToken,
-    };
-
+  async oauthController(req, res) {
+    const responseData = req.user;
+    
     setAuthCookies(res, responseData.accessToken, responseData.refreshToken);
-
-    return ApiResponse.ok(responseData, "Google login successful").send(res);
+    // res.redirect('http://localhost:5173')
+    return ApiResponse.ok(new UserDto(responseData.user), "Google login successful").send(res);
+    
   }
 
   async register(req, res) {

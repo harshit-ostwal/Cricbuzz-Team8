@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ROLES } from "../shared/constants/user.constants.js";
-
+import { PROVIDER, ROLES } from "../shared/constants/user.constants.js";
 const userSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -18,6 +17,16 @@ const userSchema = new Schema(
       type: String,
       default:
         "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+    },
+    provider: {
+      type: String,
+      enum: Object.values(PROVIDER),
+      default: "LOCAL",
+    },
+
+    providerId: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true },
