@@ -5,19 +5,14 @@ import { userRepo } from "../../repository/auth.repository.js";
 
 const authMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const accessToken = req.cookies.accessToken;
 
-    if (!authHeader?.startsWith("Bearer ")) {
+    if (!accessToken) {
       throw ApiError.unauthorized("Access token missing");
     }
-
-    const token = authHeader.split(" ")[1];
-
-    const decoded = await verifyToken(token, TOKEN_TYPE.ACCESS);
+    const decoded = await verifyToken(accessToken, TOKEN_TYPE.ACCESS);
 
     const user = await userRepo.findById(decoded.id);
-
-    console.log("Authmiddleware -> ", user);
 
     if (!user) {
       throw ApiError.unauthorized("User Not Found");

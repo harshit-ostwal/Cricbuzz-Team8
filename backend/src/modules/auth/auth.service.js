@@ -1,9 +1,10 @@
 import {userRepo} from "../../repository/auth.repository.js";
-import { generateTokens } from "../../core/security/jwt.security.js";
+import { generateToken, generateTokens, verifyToken } from "../../core/security/jwt.security.js";
 import ApiError from "../../core/http/api.error.js";
 import { compareHash, hashValue } from "../../core/security/hash.security.js";
 import { sanitizeUser } from "../../shared/utils/sanitizeUser.utils.js";
 import { email } from "zod";
+import { TOKEN_TYPE } from "../../shared/constants/security.constants.js";
 class AuthService {
 
   async findOrCreateOAuthUser(profile, provider) {
@@ -124,6 +125,24 @@ class AuthService {
       ...tokens,
     };
   }
+
+  async refreshToken(refreshToken) {
+       if (!refreshToken) {
+          throw ApiError.unauthorized("Refresh Token missing");
+       }
+
+       const decoded = await verifyToken(refreshToken,TOKEN_TYPE.REFRESH)
+
+       const user = await userRepo.findById(decoded.id)
+
+       if (!user) {
+         throw ApiError.unauthorized("Invalid refresh token")
+       }
+
+       const newAccessToken = await generateToken(user , TOKEN_TYPE.ACCESS)
+        
+       return newAccessToken
+  } 
 }
 
 export const authService = new AuthService();

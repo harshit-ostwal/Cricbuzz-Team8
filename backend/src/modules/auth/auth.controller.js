@@ -1,3 +1,4 @@
+import { cookieAccessOptions } from "../../config/security/cookie.config.js";
 import ApiResponse from "../../core/http/api.response.js";
 import { setAuthCookies } from "../../shared/utils/cookie.utils.js";
 import { UserDto } from "../user/user.dto.js";
@@ -38,6 +39,22 @@ class AuthController {
       "User login successfully",
     ).send(res);
   }
+
+
+  // refrash token 
+
+  async refreshToken(req, res){
+    const refreshToken = req.cookies?.refreshToken;
+
+    const accessToken = await authService.refreshToken(refreshToken)
+   
+    res.cookie('accessToken',accessToken, cookieAccessOptions)
+
+    ApiResponse.ok('accessToken create successfully').send(res)
+    
+  }
+  
+
 }
 
 export const authController = new AuthController();

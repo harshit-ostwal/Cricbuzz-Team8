@@ -61,4 +61,15 @@ router.post(
   asyncHandler(authController.login).bind(authController),
 );
 
+/**
+ * @route post /refresh-token
+ * @path /api/v1/auth/refresh-token
+ * @access Public
+ * @description  Refreshes the user's access token using a valid refresh token.
+ *              The refresh token must be sent via HttpOnly cookie or request body.
+ *              Returns a new access token (and optionally a new refresh token if rotation is enabled).
+ */
+
+router.get("/refresh-token", asyncHandler(authController.refreshToken));
+
 export default router;
