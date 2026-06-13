@@ -102,7 +102,7 @@ class AuthService {
   async login(data) {
     const { email, password } = data;
 
-    const user = await this.userRepo.findByEmailWithPassword(email);
+    const user = await this.userRepo.findByEmail(email);
 
     if (!user) {
       throw ApiError.unauthorized("Invalid email or password");

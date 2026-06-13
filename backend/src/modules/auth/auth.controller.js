@@ -4,56 +4,39 @@ import { UserDto } from "../user/user.dto.js";
 import { authService } from "./auth.service.js";
 
 class AuthController {
+  // OuathController 
   async oauthController(req, res) {
     const responseData = req.user;
-    
+
     setAuthCookies(res, responseData.accessToken, responseData.refreshToken);
     // res.redirect('http://localhost:5173')
-    return ApiResponse.ok(new UserDto(responseData.user), "Google login successful").send(res);
-    
+    return ApiResponse.ok(
+      new UserDto(responseData.user),
+      "Google login successful",
+    ).send(res);
   }
-
+// register 
   async register(req, res) {
-    const data = await authService.register(req.body);
+    const responseData = await authService.register(req.body);
 
-    const user = {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      isDeleted: data.isDeleted,
-      profileImage: data.profileImage,
-      _id: data._id,
-    };
+    setAuthCookies(res, responseData.accessToken, responseData.refreshToken);
 
-    const tokens = {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-    };
-
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-
-    return ApiResponse.created(user, "User Register Successfully ").send(res);
+    return ApiResponse.created(
+      new UserDto(responseData.user),
+      "User Register Successfully ",
+    ).send(res);
   }
-
+ 
+  // login 
   async login(req, res) {
-    const data = await authService.login(req.body);
+    const responseData = await authService.login(req.body);
 
-    const user = {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      isDeleted: data.isDeleted,
-      profileImage: data.profileImage,
-      _id: data._id,
-    };
+    setAuthCookies(res, responseData.accessToken, responseData.refreshToken);
 
-    const tokens = {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-    };
-    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-
-    return ApiResponse.ok(user, "User login successfully").send(res);
+    return ApiResponse.ok(
+      new UserDto(responseData.user),
+      "User login successfully",
+    ).send(res);
   }
 }
 
