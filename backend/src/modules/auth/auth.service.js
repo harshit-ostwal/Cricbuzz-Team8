@@ -1,13 +1,10 @@
-import AuthRepository from "../../repository/auth.repository.js";
+import {userRepo} from "../../repository/auth.repository.js";
 import { generateTokens } from "../../core/security/jwt.security.js";
 import ApiError from "../../core/http/api.error.js";
 import { compareHash, hashValue } from "../../core/security/hash.security.js";
 import { sanitizeUser } from "../../shared/utils/sanitizeUser.utils.js";
 import { email } from "zod";
 class AuthService {
-  constructor() {
-    this.userRepo = new AuthRepository();
-  }
 
   async findOrCreateOAuthUser(profile, provider) {
     if (!profile) {
@@ -24,23 +21,23 @@ class AuthService {
       throw ApiError.validationError(`${provider} account must provide an email`);
     }
 
-    let user = await this.userRepo.findUserByProvider(provider, providerId);
+    let user = await userRepo.findUserByProvider(provider, providerId);
 
     if (user) {
       return user;
     }
 
-    user = await this.userRepo.findByEmail(email);
+    user = await userRepo.findByEmail(email);
 
     if (user) {
-      return await this.userRepo.updateById(user._id, {
+      return await userRepo.updateById(user._id, {
         provider,
         providerId,
         profileImage: avatar || user.ProfileImage,
       });
     }
 
-    return await this.userRepo.create({
+    return await userRepo.create({
       name,
       email,
       profileImage: avatar,
@@ -51,7 +48,7 @@ class AuthService {
 
   async oauthLogin(profile, provider) {
     try {
-      const user = await this.findOrCreateOAuthUser(profile, provider);
+      const user = await findOrCreateOAuthUser(profile, provider);
 
       const tokens = generateTokens(user);
 
@@ -65,17 +62,17 @@ class AuthService {
   }
 
   async googleLogin(profile) {
-    return this.oauthLogin(profile, "GOOGLE");
+    return oauthLogin(profile, "GOOGLE");
   }
 
   async githubLogin(profile) {
-    return this.oauthLogin(profile, "GITHUB");
+    return oauthLogin(profile, "GITHUB");
   }
 
   async register(data) {
     const { name, email, password, role } = data;
 
-    const existingUser = await this.userRepo.findByEmail(email);
+    const existingUser = await userRepo.findByEmail(email);
 
     if (existingUser) {
       throw ApiError.conflict("User already exists with this email");
@@ -83,7 +80,7 @@ class AuthService {
 
     const hashedPassword = await hashValue(password);
 
-    const newUser = await this.userRepo.create({
+    const newUser = await userRepo.create({
       name,
       email,
       password: hashedPassword,
@@ -102,7 +99,7 @@ class AuthService {
   async login(data) {
     const { email, password } = data;
 
-    const user = await this.userRepo.findByEmail(email);
+    const user = await userRepo.findByEmail(email);
 
     if (!user) {
       throw ApiError.unauthorized("Invalid email or password");
