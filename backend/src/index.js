@@ -2,11 +2,14 @@ import process from "node:process";
 import { app } from "./app.js";
 import { NODE_ENV, PORT } from "./config/env.config.js";
 import DatabaseService from "./infrastructure/database/database.service.js";
+import { startJobs } from "./infrastructure/jobs/index.js";
 import loggerService from "./infrastructure/logger/logger.service.js";
 
 async function startServer() {
   try {
     await DatabaseService.connect();
+
+    startJobs();
 
     const server = app.listen(Number(PORT), () => {
       loggerService.info(

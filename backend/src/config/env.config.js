@@ -21,6 +21,7 @@ if (fs.existsSync(envFile)) {
   console.error(
     `\n ❌ No environment file found. Please create either ${envFile} or ${defaultEnvFile}. \n`,
   );
+  process.exit(1);
 }
 
 config({
@@ -42,6 +43,7 @@ if (!parsedEnv.success) {
     "❌ Invalid environment variables:",
     parsedEnv.error.flatten().fieldErrors,
   );
+  process.exit(1);
 }
 
 export const {
@@ -65,6 +67,23 @@ export const {
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
 
+  // oAuth
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
+
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GITHUB_CALLBACK_URL,
+
+  // Mail
+  MAIL_PROVIDER,
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_SECURE,
+
   // Cookies
   COOKIE_SECRET_KEY,
 
@@ -83,4 +102,10 @@ export const {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   GOOGLE_CALLBACK_URL,
+  // JWT
+  ACCESS_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_EXPIRY_MS,
 } = env;
