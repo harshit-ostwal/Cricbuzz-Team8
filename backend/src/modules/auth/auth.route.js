@@ -5,6 +5,7 @@ import asyncHandler from "../../core/middlewares/async-handler.middleware.js";
 import validate from "../../core/middlewares/validation.middleware.js";
 import { loginValidation, registerValidation } from "./auth.validtion.js";
 import { authGuard, callbackGuard } from "./guards/auth.gurad.js";
+import authMiddleware from "../../core/middlewares/auth.middleware.js";
 
 const router = createRouter();
 /**
@@ -58,11 +59,11 @@ router.post(
   "/login",
   loginValidation,
   validate,
-  asyncHandler(authController.login).bind(authController),
+  asyncHandler(authController.login.bind(authController)),
 );
 
 /**
- * @route post /refresh-token
+ * @route get /refresh-token
  * @path /api/v1/auth/refresh-token
  * @access Public
  * @description  Refreshes the user's access token using a valid refresh token.
@@ -70,6 +71,21 @@ router.post(
  *              Returns a new access token (and optionally a new refresh token if rotation is enabled).
  */
 
-router.get("/refresh-token", asyncHandler(authController.refreshToken));
+router.get(
+  "/refresh-token",
+  asyncHandler(authController.refreshToken.bind(authController)),
+);
+
+/**
+ * @route get /me
+ * @path /api/v1/auth/me
+ * @access Private
+ */
+
+router.get(
+  "/me",
+  authMiddleware,
+  asyncHandler(authController.me.bind(authController)),
+);
 
 export default router;

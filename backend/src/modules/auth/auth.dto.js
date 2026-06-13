@@ -4,6 +4,7 @@ class UserDto {
     this.name = user.name;
     this.email = user.email;
     this.role = user.role;
+    this.profleImage = user.profileImage
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
   }

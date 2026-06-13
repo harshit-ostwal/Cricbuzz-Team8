@@ -1,7 +1,7 @@
 import { cookieAccessOptions } from "../../config/security/cookie.config.js";
 import ApiResponse from "../../core/http/api.response.js";
 import { setAuthCookies } from "../../shared/utils/cookie.utils.js";
-import { UserDto } from "../user/user.dto.js";
+import { UserDto } from "./auth.dto.js";
 import { authService } from "./auth.service.js";
 
 class AuthController {
@@ -52,6 +52,12 @@ class AuthController {
 
     ApiResponse.ok('accessToken create successfully').send(res)
     
+  }
+
+
+  async me(req, res) {
+   
+    ApiResponse.ok(new UserDto(req.user), "User Verified").send(res)
   }
   
 
