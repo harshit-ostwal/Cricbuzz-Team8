@@ -128,7 +128,7 @@ class AuthService {
 
   async refreshToken(refreshToken) {
        if (!refreshToken) {
-          throw ApiError.unauthorized("Refresh Token missing");
+          throw ApiError.unauthorized("Refresh Token expired");
        }
 
        const decoded = await verifyToken(refreshToken,TOKEN_TYPE.REFRESH)

@@ -4,7 +4,7 @@ export  function sanitizeUser(user) {
       name: user.name,
       email: user.email,
       role: user.role,
-      profileImage: user.ProfileImage,
+      profileImage: user.profileImage,
       provider: user.provider,
     };
   }

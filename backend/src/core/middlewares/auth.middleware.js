@@ -8,7 +8,7 @@ const authMiddleware = async (req, res, next) => {
     const accessToken = req.cookies.accessToken;
 
     if (!accessToken) {
-      throw ApiError.unauthorized("Access token missing");
+      throw ApiError.unauthorized("Access token expired");
     }
     const decoded = await verifyToken(accessToken, TOKEN_TYPE.ACCESS);
 
@@ -17,9 +17,9 @@ const authMiddleware = async (req, res, next) => {
     if (!user) {
       throw ApiError.unauthorized("User Not Found");
     }
-
-    req.user;
-
+  
+    req.user = user;
+   
     next();
   } catch (error) {
     next(error);
