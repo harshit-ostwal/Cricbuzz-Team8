@@ -1,4 +1,4 @@
 const APP_NAME = "CricBuzz App";
 const APP = "cric-buzz-app";
-
-export { APP, APP_NAME };
+const DEVELOPER_NAME = "praful"
+export { APP, APP_NAME , DEVELOPER_NAME};
