@@ -26,7 +26,7 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-export const authoriztionMiddleware = (role) => {
+export const authoriztionMiddleware = (...role) => {
   return (req, res, next) => {
     if (!req.user) {
       throw ApiError.unauthorized("Authentication required");
