@@ -4,6 +4,7 @@ import ApiResponse from "../core/http/api.response.js";
 import { APP_NAME } from "../shared/constants/app.constants.js";
 import healthRoute from "./health.route.js";
 import authRoute from "../modules/auth/auth.route.js";
+import seriesRoute from "../modules/series/series.route.js";
 const router = createRouter();
 
 // Swagger UI for API documentation
@@ -16,7 +17,7 @@ router.use("/docs", swaggerUi.serve, swaggerUi.setup(specs, theme));
  */
 router.get("/", (_, res) => {
   return ApiResponse.ok(null, `Welcome to the ${APP_NAME} API Service`).send(
-    res
+    res,
   );
 });
 
@@ -27,6 +28,8 @@ router.get("/", (_, res) => {
  */
 router.use("/health", healthRoute);
 
-router.use('/auth', authRoute)
+router.use("/auth", authRoute);
+
+router.use("/series", seriesRoute);
 
 export default router;

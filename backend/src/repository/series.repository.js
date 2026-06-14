@@ -1,9 +1,17 @@
-import { seriesModel } from "../models/series.model";
+import { seriesModel } from "../models/series.model.js";
 
 class SeriesRepositroy {
   async create(data) {
     return await seriesModel.create(data);
   }
+
+  async findByName(name) {
+    return await seriesModel.findOne({
+      name,
+      isDeleted: false,
+    });
+  }
+
   async findAll() {
     return await seriesModel.find({ isDeleted: false }).sort({ createdAt: -1 });
   }
@@ -13,6 +21,7 @@ class SeriesRepositroy {
       isDeleted: false,
     });
   }
+  
   async findBySeason(season) {
     return await seriesModel.findOne({
       season,
