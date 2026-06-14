@@ -17,13 +17,25 @@ const authMiddleware = async (req, res, next) => {
     if (!user) {
       throw ApiError.unauthorized("User Not Found");
     }
-  
+
     req.user = user;
-   
+
     next();
   } catch (error) {
     next(error);
   }
+};
+
+export const authoriztionMiddleware = (role) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      throw ApiError.unauthorized("Authentication required");
+    }
+    if (!role.includes(req.user.role)) {
+      throw ApiError.forbidden("You are not allowed to access this resources");
+    }
+    next()
+  };
 };
 
 export default authMiddleware;
